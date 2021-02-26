@@ -1,0 +1,9 @@
+.filterDiv {
+    float: right;
+}
+@media only screen and (max-width: 375px) {
+  .filterDiv {
+    float: left;
+    margin-left: 20px;
+  }
+}
