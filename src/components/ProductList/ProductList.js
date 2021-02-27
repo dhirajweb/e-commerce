@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import {connect} from 'react-redux'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import './ProductList.css'
+import {addToCart} from '../../actions'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ProductList = () => {
+const ProductList = (props) => {
     const [productList, setProductList] = useState([])
     const [categoryList, setCategoryList] = useState([])
     const [filter, setFilter] = useState('all')
@@ -37,8 +39,8 @@ const ProductList = () => {
 
     const fetchCategories = () => {
         fetch('https://fakestoreapi.com/products/categories')
-            .then(res=>res.json())
-            .then(res=>setCategoryList(res))
+        .then(res=>res.json())
+        .then(res=>setCategoryList(res))
     }
 
     const titleTextStyle = {
@@ -68,6 +70,10 @@ const ProductList = () => {
             .then(res=>res.json())
             .then(result=>setProductList(result))
         }
+    }
+
+    const addProductToCart = (product) => {
+        props.dispatch(addToCart(product.id, product.title, product.price, product.image))
     }
 
     useEffect(() => {
@@ -133,7 +139,7 @@ const ProductList = () => {
                 </CardActionArea>
                 <CardActions>
                     <Grid item xs={6} style={{textAlign: 'left'}}>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary" onClick={() => addProductToCart(product)}>
                         ADD TO CART
                         </Button>
                     </Grid>
@@ -151,4 +157,4 @@ const ProductList = () => {
     )
 }
 
-export default ProductList
+export default connect()(ProductList)
