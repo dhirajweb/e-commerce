@@ -12,7 +12,9 @@ import Grid from '@material-ui/core/Grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import './ProductList.css'
-import {addToCart} from '../../actions'
+import {addToCart, addProductId} from '../../actions'
+import { useToasts } from 'react-toast-notifications'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -36,6 +38,7 @@ const ProductList = (props) => {
             setProductList(result)
         })
     }
+    const { addToast } = useToasts()
 
     const fetchCategories = () => {
         fetch('https://fakestoreapi.com/products/categories')
@@ -74,6 +77,12 @@ const ProductList = (props) => {
 
     const addProductToCart = (product) => {
         props.dispatch(addToCart(product.id, product.title, product.price, product.image))
+        props.dispatch(addProductId(product.id))
+        addToast('Product added to cart', {
+            appearance: 'success',
+            autoDismiss: true,
+            autoDismissTimeout: 2000
+        })
     }
 
     useEffect(() => {
@@ -139,12 +148,18 @@ const ProductList = (props) => {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Grid item xs={6} style={{textAlign: 'left'}}>
-                        <Button size="small" color="primary" onClick={() => addProductToCart(product)}>
-                        ADD TO CART
-                        </Button>
+                    <Grid item xs={8} style={{textAlign: 'left'}}>
+                        {props.productsInCart.includes(product.id)?
+                            <div>
+                            <Button size="small" color="primary">
+                            ADDED TO CART
+                            </Button><CheckCircleIcon style={{verticalAlign: 'middle', color: '#8bc34a'}}/></div>:
+                            <Button size="small" color="primary" onClick={() => addProductToCart(product)}>
+                            ADD TO CART
+                            </Button>
+                        }
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography variant="subtitle2" style={{textAlign: 'right'}}>
                             {'$'+product.price}
                         </Typography>
@@ -158,4 +173,8 @@ const ProductList = (props) => {
     )
 }
 
-export default connect()(ProductList)
+const mapStateToProps = (state) => ({
+    productsInCart: state.cartItems.data,
+})
+
+export default connect(mapStateToProps)(ProductList)

@@ -4,9 +4,11 @@ import ProductList from './components/ProductList/ProductList'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Admin from './components/Admin/Admin'
 import UserDetail from './components/UserDetail/UserDetail'
+import { ToastProvider } from 'react-toast-notifications'
 
 function App() {
   return (
+    <ToastProvider placement='top-center'>
     <div className="App">
       <Router>
       <Navbar />
@@ -17,6 +19,7 @@ function App() {
         </Switch>
       </Router>
     </div>
+    </ToastProvider>
   );
 }
 

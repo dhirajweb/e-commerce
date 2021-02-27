@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 import ClearIcon from '@material-ui/icons/Clear';
-import { removeFromCart } from '../../actions'
+import { removeFromCart, removeProductId } from '../../actions'
 
 const useStyles = makeStyles((theme) => ({
     rightNav: {
@@ -37,13 +37,14 @@ const Cart = (props) => {
     const deleteFromCart = async (productId) => {
         if(productId) {
             await props.dispatch(removeFromCart(productId))
+            props.dispatch(removeProductId(productId))
             setCartChanged(!cartChanged)
         }
     }
 
     useEffect(() => {
         calculateCartTotal();
-    }, [cartChanged])
+    }, [cartChanged])// eslint-disable-line
     return (
         <div>
             <Dialog onClose={() => props.close(false)} aria-labelledby="simple-dialog-title" open={props.open}>
@@ -52,7 +53,7 @@ const Cart = (props) => {
                     {props.productsInCart.length > 0?
                     <List className={classes.root}>
                     {props.productsInCart.map((product) => (
-                        <div>
+                        <div key={product.id}>
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
@@ -65,7 +66,7 @@ const Cart = (props) => {
                             <Divider variant="inset" component="li" />
                         </div>
                     ))}
-                    </List>:<p style={{margin: '20px'}}>No products in cart</p>}
+                    </List>:<p style={{margin: '20px', fontSize: '15px'}}>No products in cart</p>}
                     <Typography variant="h6" style={{textAlign: 'right'}} className={classes.title}>
                         {props.productsInCart.length > 0?'Cart total: $'+cartTotal:'Cart total: $0'}
                     </Typography>

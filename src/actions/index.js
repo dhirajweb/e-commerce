@@ -12,3 +12,15 @@ export const removeFromCart = (product_id) => ({
     type: REMOVE_FROM_CART,
     product_id
 });
+
+const ADD_PRODUCT_ID = 'ADD_PRODUCT_ID';
+export const addProductId = (product_id) => ({
+    type: ADD_PRODUCT_ID,
+    product_id
+});
+
+const REMOVE_PRODUCT_ID = 'REMOVE_PRODUCT_ID';
+export const removeProductId = (product_id) => ({
+    type: REMOVE_PRODUCT_ID,
+    product_id
+});

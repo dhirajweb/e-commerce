@@ -19,9 +19,9 @@ const UserDetail = (props) => {
     const classes = useStyles();
     const [userData, setUserData] = useState([])
 
-    useEffect(async () => {
+    useEffect(() => {
         let data = [];
-        data[0] = await JSON.parse(sessionStorage.getItem('userDetails'))
+        data[0] = JSON.parse(sessionStorage.getItem('userDetails'))
         setUserData(data)
     }, [])
 

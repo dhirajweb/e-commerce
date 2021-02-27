@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Dialog, DialogTitle, TextField, Button, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router';
+import { useToasts } from 'react-toast-notifications'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,6 +18,7 @@ const AdminLogin = (props) => {
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
     const [error, setError] = useState(null)
+    const { addToast } = useToasts()
 
     const Login = (e) => {
         e.preventDefault();
@@ -32,6 +34,12 @@ const AdminLogin = (props) => {
                 sessionStorage.setItem('isAuthenticated', 'yes')
                 props.close(false)
                 setError("")
+                addToast('Successfully logged in', {
+                    appearance: 'success',
+                    autoDismiss: true,
+                    autoDismissTimeout: 2000
+                })
+
             } else {
                 setError("Invalid credentials")
             }
