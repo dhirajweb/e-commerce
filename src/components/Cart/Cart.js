@@ -66,7 +66,7 @@ const Cart = (props) => {
                             <Divider variant="inset" component="li" />
                         </div>
                     ))}
-                    </List>:<p style={{margin: '20px', fontSize: '15px'}}>No products in cart</p>}
+                    </List>:<p style={{margin: '20px', fontSize: '12px', marginLeft: '50px', marginRight: '50px'}}>No products in cart</p>}
                     <Typography variant="h6" style={{textAlign: 'right'}} className={classes.title}>
                         {props.productsInCart.length > 0?'Cart total: $'+cartTotal:'Cart total: $0'}
                     </Typography>
