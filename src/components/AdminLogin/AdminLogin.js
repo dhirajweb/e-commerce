@@ -39,7 +39,6 @@ const AdminLogin = (props) => {
                     autoDismiss: true,
                     autoDismissTimeout: 2000
                 })
-
             } else {
                 setError("Invalid credentials")
             }

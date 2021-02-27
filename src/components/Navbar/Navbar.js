@@ -50,7 +50,7 @@ const Navbar = (props) => {
     const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const Logout = () => {
-        props.history.push('/')
+        props.history.push('/e-commerce')
         sessionStorage.setItem('isAuthenticated', 'no')
     }
     return (
