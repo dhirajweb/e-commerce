@@ -77,6 +77,7 @@ const ProductList = (props) => {
     }
 
     useEffect(() => {
+        sessionStorage.setItem('isAuthenticated','no')
         if(filter === 'all') {
             fetchProducts();
             fetchCategories();

@@ -9,7 +9,9 @@ import ShoppingCartTwoToneIcon from '@material-ui/icons/ShoppingCartTwoTone';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 import Cart from '../Cart/Cart'
+import AdminLogin from '../AdminLogin/AdminLogin'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     rightNav: {
@@ -45,6 +47,12 @@ const StyledBadge = withStyles((theme) => ({
 const Navbar = (props) => {
     const classes = useStyles();
     const [openCartModal, setOpenCartModal] = useState(false)
+    const [openLoginModal, setOpenLoginModal] = useState(false)
+
+    const Logout = () => {
+        props.history.push('/')
+        sessionStorage.setItem('isAuthenticated', 'no')
+    }
     return (
         <div>
             <AppBar position="static" style={{backgroundColor:'#9c27b0'}}>
@@ -53,16 +61,23 @@ const Navbar = (props) => {
                     E-commerce
                     </Typography>
                     <LocalMallTwoToneIcon />
+                    {sessionStorage.getItem('isAuthenticated') === 'yes'?
                     <div className={classes.rightNav}>
-                        <Button color="inherit" style={{marginRight: '10px'}}>Login</Button>
-                        <StyledBadge badgeContent={props.numberOfItems} color="secondary">
-                            <ShoppingCartTwoToneIcon style={{verticalAlign: 'middle', cursor: 'pointer'}} onClick={() => setOpenCartModal(true)}/>
-                        </StyledBadge>
-                    </div>
+                        <Button color="inherit" style={{marginRight: '10px'}} onClick={Logout}>Logout</Button></div>:
+                        <div className={classes.rightNav}>
+                            <Button color="inherit" style={{marginRight: '10px'}} onClick={() => setOpenLoginModal(true)}>Login</Button>
+                            <StyledBadge badgeContent={props.numberOfItems} color="secondary">
+                                <ShoppingCartTwoToneIcon style={{verticalAlign: 'middle', cursor: 'pointer'}} onClick={() => setOpenCartModal(true)}/>
+                            </StyledBadge>
+                        </div>
+                    }
                 </Toolbar>
             </AppBar>
             {openCartModal?
                 <Cart open={openCartModal} close={setOpenCartModal}/>:null
+            }
+            {openLoginModal?
+                <AdminLogin open={openLoginModal} close={setOpenLoginModal}/>:null
             }
         </div>
     )
@@ -72,4 +87,4 @@ const mapStateToProps = (state) => ({
     numberOfItems: state.cart.data.length,
 })
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(withRouter((Navbar)));
